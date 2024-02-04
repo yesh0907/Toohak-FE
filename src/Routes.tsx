@@ -1,11 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import App from "../App";
+import JoinRoom from "./routes/JoinRoom";
 
 const AppRoutes = () => {
     return (
         <Router>
             <Routes>
-                <Route path="/join/:room_id" element={<App />} />
+                <Route path="/" element={<h1>Hello !Toohak</h1>} />
+                <Route path="/join/:room_id" element={<JoinRoom />} />
             </Routes>
         </Router>
     );

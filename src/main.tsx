@@ -1,10 +1,6 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
-import Routes from "./routes/AppRoutes";
+import Routes from "./Routes";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-    // Uncomment StrictMode if you don't want app to re-render twice
-    <React.StrictMode>
-        <Routes />
-    </React.StrictMode>
+    <Routes />
 );
