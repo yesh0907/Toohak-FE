@@ -13,10 +13,10 @@ function JoinRoom() {
             socket.emit("joinRoom", roomId);
         }
 
-        // disconnect ws connection on unmount
+        // Disconnect ws connection on unmount
         return () => {
             socket.close();
-        }
+        };
     }, [roomId]);
 
     return (
