@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
-function CreateRoomPage() {
+function CreateRoom() {
+  // NOTE: No backend API call implemented rn cuz it's not set up
   const handleCreateRoomClick = () => {
     console.log("Create Room Clicked");
   };
@@ -29,4 +30,4 @@ function CreateRoomPage() {
   );
 }
 
-export default CreateRoomPage;
+export default CreateRoom;
