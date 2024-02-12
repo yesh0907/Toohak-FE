@@ -8,7 +8,7 @@ const AppRoutes = () => {
             <Routes>
                 <Route path="/" element={<h1>Hello !Toohak</h1>} />
                 <Route path="/join/:room_id" element={<JoinRoom />} />
-                <Route path="/waiting-for-next-question" element={<WaitingForNextQuestion />} />
+                <Route path="/room/:room_id/waiting-for-next-question" element={<WaitingForNextQuestion />} />
             </Routes>
         </Router>
     );
