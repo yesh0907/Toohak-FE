@@ -10,7 +10,7 @@ export default function WaitingForQuiz() {
 
     const [players, setPlayers] = useState<string[]>([]);
 
-    // Host the websocket room for the quiz
+    // Host joins the websocket room for the quiz
     useEffect(() => {
         socket.emit(WS_EVENTS.JOIN_ROOM, roomId);
     }, [roomId])
