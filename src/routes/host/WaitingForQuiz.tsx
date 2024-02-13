@@ -10,17 +10,17 @@ export default function WaitingForQuiz() {
 
     const [players, setPlayers] = useState<string[]>([]);
 
-    // workaround to get test this feature without going through the whole flow
+    // Host the websocket room for the quiz
     useEffect(() => {
-        socket.emit('isHost', roomId);
+        socket.emit(WS_EVENTS.JOIN_ROOM, roomId);
     }, [roomId])
 
     useEffect(() => {
         // handle new player event
-        const handleNewPlayer = (player: string) => {
+        const handleNewPlayer = ({ playerId }: { playerId: string }) => {
             // set state this way to avoid calling this effect again
             // see https://socket.io/how-to/use-with-react#remarks-about-the-useeffect-hook
-            setPlayers(prevPlayers => [...prevPlayers, player]);
+            setPlayers(prevPlayers => [...prevPlayers, playerId]);
         };
 
         // listen for new player event
