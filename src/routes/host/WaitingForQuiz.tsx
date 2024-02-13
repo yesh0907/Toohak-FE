@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import { socket } from "../../socket";
+import { WS_EVENTS } from "../../socket/events";
 
 export default function WaitingForQuiz() {
     const navigate = useNavigate();
@@ -23,17 +24,17 @@ export default function WaitingForQuiz() {
         };
 
         // listen for new player event
-        socket.on('newPlayer', handleNewPlayer);
+        socket.on(WS_EVENTS.NEW_PLAYER, handleNewPlayer);
 
         // stop listening for event when component is unmounted
         return () => {
-            socket.off('newPlayer');
+            socket.off(WS_EVENTS.NEW_PLAYER);
         }
     }, []);
 
     const startQuiz = () => {
         // emit start quiz event
-        socket.emit('startQuiz');
+        socket.emit(WS_EVENTS.START_QUIZ);
         // transition to next page
         navigate(`/room/${roomId}/in-progress`);
     }

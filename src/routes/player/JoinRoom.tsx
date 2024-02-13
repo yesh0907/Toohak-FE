@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { socket } from "../../socket";
+import { WS_EVENTS } from "../../socket/events";
 
 function JoinRoom() {
   // Extract room_id from the URL
@@ -10,7 +11,7 @@ function JoinRoom() {
     // Check if room_id is available before emitting the message
     if (roomId) {
       // Emit a "joinRoom" event to the server with the roomId
-      socket.emit("joinRoom", roomId);
+      socket.emit(WS_EVENTS.JOIN_ROOM, roomId);
     }
 
     // Disconnect ws connection on unmount
