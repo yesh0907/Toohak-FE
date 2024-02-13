@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { socket } from "../socket";
+import { socket } from "../../socket";
 
 // get api endpoint from env
 const apiEndpoint = import.meta.env.VITE_BACKEND_URL;
