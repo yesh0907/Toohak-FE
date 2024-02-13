@@ -15,11 +15,6 @@ const state$ = observable({
 
 });
 
-interface QuestionData {
-    question: string;
-    answers: Array<string>;
-}
-
 // generate a random number from 1-1000 and append to string 'player'
 const generatePlayerId = () => `player${Math.floor(Math.random() * 1000) + 1}`;
 
@@ -40,7 +35,7 @@ function JoinRoom() {
         playerId: state$.player.id.get(),
       });
 
-      socket.on("newQuestion", (data: QuestionData) => {
+      socket.on("newQuestion", (data) => {
         state$.question.set(data.question);
         state$.answers.set(data.answers);
       })
