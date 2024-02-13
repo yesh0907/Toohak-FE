@@ -11,10 +11,6 @@ function WaitingForNextQuestion() {
     const [waitingForNextQuestion, setWaitingForNextQuestion] = useState<boolean>(true);
 
     useEffect(() => {
-        socket.emit('startQuiz', roomId);
-    });
-
-    useEffect(() => {
         // handle newQuestion event to send recvQuestion event to server
         const handleNewQuestion = (question: string, answers: Map<string, string>) => {
 
