@@ -34,7 +34,7 @@ export default function WaitingForQuiz() {
 
     const startQuiz = () => {
         // emit start quiz event
-        socket.emit(WS_EVENTS.START_QUIZ, roomId)
+        socket.emit(WS_EVENTS.START_QUIZ, roomId);
         // transition to next page
         navigate(`/room/${roomId}/in-progress`);
     }
