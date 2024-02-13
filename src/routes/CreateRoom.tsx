@@ -1,9 +1,32 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { socket } from "../socket";
+
+// get api endpoint from env
+const apiEndpoint = import.meta.env.VITE_BACKEND_URL;
 
 function CreateRoom() {
-  // NOTE: No backend API call implemented rn cuz it's not set up
-  const handleCreateRoomClick = () => {
-    console.log("Create Room Clicked");
+  const navigate = useNavigate();
+
+  const handleCreateRoomClick = async () => {
+    try {
+      const response = await fetch(`${apiEndpoint}/create-room`, {
+        method: 'POST',
+        body: JSON.stringify({ hostWsId: socket.id })
+      });
+      const result = await response.json();
+      // check if there was an error with request
+      if (response.ok) {
+        // navigate to host view of waiting room
+        const { roomId } = result;
+        navigate(`/room/${roomId}/waiting`);
+      } else {
+        // throw error using error provided by endpoint
+        const { error } = result;
+        throw new Error(error);
+      }
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
