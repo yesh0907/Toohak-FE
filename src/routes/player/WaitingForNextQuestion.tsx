@@ -22,7 +22,7 @@ function WaitingForNextQuestion() {
 
     useEffect(() => {
         // handle newQuestion event to send recvQuestion event to server
-        const handleNewQuestion = (data) => {
+        const handleNewQuestion = (data: { question: string, answers: [] }) => {
 
             state$.question.set(data.question);
             state$.answers.set(data.answers);
