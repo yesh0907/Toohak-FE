@@ -1,22 +1,31 @@
 import { useEffect, useState } from "react";
 import { socket } from "../socket";
 import { useNavigate, useParams } from "react-router-dom"
+import { observable } from "@legendapp/state";
+
+// global state
+const state$ = observable({
+  player: {
+    id: '',
+  },
+  question: '',
+  answers: [],
+  timer: 30,
+
+});
 
 function WaitingForNextQuestion() {
 
     const navigate = useNavigate();
     const { room_id: roomId } = useParams();
-    const [question, setQuestion] = useState<string>("question");
-    const [answers, setAnswers] = useState<Map<string, string>>(new Map());
     const [waitingForNextQuestion, setWaitingForNextQuestion] = useState<boolean>(true);
 
     useEffect(() => {
         // handle newQuestion event to send recvQuestion event to server
-        const handleNewQuestion = (question: string, answers: Map<string, string>) => {
+        const handleNewQuestion = (data) => {
 
-            setQuestion(question);
-            setAnswers(answers);
-            console.log("New Question: ", question, answers);
+            state$.question.set(data.question);
+            state$.answers.set(data.answers);
 
             // send WS event to server to start timer
             socket.emit('recvQuestion', roomId);
@@ -41,7 +50,7 @@ function WaitingForNextQuestion() {
         // handles quiz completed event to navigate to quiz completed page
         const handleQuizCompleted = () => {
             setWaitingForNextQuestion(false);
-            navigate(`/join/${roomId}/quiz-completed`);
+            navigate(`/room/${roomId}/quiz-completed`);
         }
 
         // quiz is completed
@@ -61,9 +70,9 @@ function WaitingForNextQuestion() {
                 </>
             ) : ( // if received nextQuestion event 
                 <>
-                    <p>question: {question}</p>
+                    <p>question: {state$.question.get()}</p>
                     <ul className="answers">
-                        {Array.from(answers.entries()).map(([key, answer]) => (
+                        {Array.from(state$.answers.entries()).map(([key, answer]) => (
                             <li key={key}>
                                 {answer}
                             </li>
