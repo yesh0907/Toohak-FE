@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import JoinRoom from "./routes/JoinRoom";
-import WaitingForNextQuestion from "./routes/WaitingForNextQuestion";
+import JoinRoom from "./routes/player/JoinRoom";
+import WaitingForNextQuestion from "./routes/player/WaitingForNextQuestion";
 
 const AppRoutes = () => {
     return (
