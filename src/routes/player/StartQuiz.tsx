@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { socket } from "../../socket";
 import { WS_EVENTS } from "../../socket/events";
 
-export default function startQuiz() {
+export default function StartQuiz() {
 
     useEffect(() => {
         const newQuestion = () => {
@@ -23,8 +23,6 @@ export default function startQuiz() {
           <Link to="/" className="text-6xl text-white font-bold">
             !Toohak
           </Link>
-        </div>
-        <div>
         </div>
         <div className="flex gap-3">
           <>
