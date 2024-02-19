@@ -20,6 +20,18 @@ const state$ = observable({
   displayQuestion: false,
 });
 
+function WaitingForNextQuestionPage() {
+    return (
+        <div className="flex flex-col items-center justify-center min-h-screen bg-purple-800 min-h-screen">
+        <h1 className="text-3xl text-white mb-3">Waiting for next question...</h1>
+        <div
+            className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-neutral-100 motion-reduce:animate-[spin_1.5s_linear_infinite]"
+            role="status">
+        </div>
+    </div>
+    )
+}
+
 function WaitingForNextQuestion() {
 
     const { room_id: roomId } = useParams();
@@ -66,14 +78,7 @@ function WaitingForNextQuestion() {
                     answers={Array.from(state$.answers.entries())}
                 />
             ) : ( // still waiting for next question
-                <div className="flex flex-col items-center justify-center min-h-screen bg-purple-800 min-h-screen">
-                    <h1 className="text-3xl text-white mb-3">Waiting for next question...</h1>
-                    <div
-                        className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-neutral-100 motion-reduce:animate-[spin_1.5s_linear_infinite]"
-                        role="status">
-                    </div>
-
-                </div>
+                <WaitingForNextQuestionPage />
             )}
         </>
     );
