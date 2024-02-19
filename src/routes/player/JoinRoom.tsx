@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { socket } from "../../socket";
 import { WS_EVENTS } from "../../socket/events";
 import { observable } from "@legendapp/state";
@@ -15,6 +15,7 @@ const State = observable({
 const generatePlayerId = () => `player${Math.floor(Math.random() * 1000) + 1}`;
 
 function JoinRoom() {
+  const navigate = useNavigate();
   // Extract room_id from the URL
   const { room_id: roomId } = useParams();
 
@@ -30,8 +31,10 @@ function JoinRoom() {
         roomId,
         playerId: State.player.id.get(),
       });
+      navigate(`/room/${roomId}/waiting-player`);
     }
-  }, [roomId]);
+    //
+  }, [roomId, navigate]);
 
   return (
     <>
