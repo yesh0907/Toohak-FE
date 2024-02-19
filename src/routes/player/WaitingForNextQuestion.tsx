@@ -2,7 +2,10 @@ import { socket } from "../../socket";
 import { useParams } from "react-router-dom";
 import { observable } from "@legendapp/state";
 import { useObserveEffect } from "@legendapp/state/react"
+import { persistObservable, configureObservablePersistence } from "@legendapp/state/persist"
 import { enableReactTracking } from "@legendapp/state/config/enableReactTracking"
+import { ObservablePersistLocalStorage } from '@legendapp/state/persist-plugins/local-storage'
+
 
 import DisplayQuestion from "./DisplayQuestion";
 
@@ -21,8 +24,13 @@ function WaitingForNextQuestion() {
 
     const { room_id: roomId } = useParams();
 
-    // Enable React components to automatically track observables and rerender on change
+    // enable React components to automatically track observables and rerender on change
     enableReactTracking({ auto: true });
+    // // automatically persist state$ (upon refresh, etc.)
+    persistObservable(state$, {
+        pluginLocal: ObservablePersistLocalStorage,
+        local: "state", 
+    })
 
     useObserveEffect(() => {
         // handle newQuestion event to send recvQuestion event to server
@@ -50,6 +58,14 @@ function WaitingForNextQuestion() {
         socket.on("startTimer", handleStartTimer);
     })
 
+    const handleClick = () => {
+        console.log("click");
+        console.log("displayQuestion: ", state$.displayQuestion.get());
+
+        socket.emit("joinRoom", roomId);
+        socket.emit("startQuiz", roomId);
+    }
+
     return (
         <>
             {state$.displayQuestion.get() ? ( // if received question
@@ -60,6 +76,8 @@ function WaitingForNextQuestion() {
             ) : ( // still waiting for next question
                 <>
                     <h1 className="text-3xl font-bold underline">Waiting for next question...</h1>
+                    <button onClick={handleClick}> Click mE!</button>
+                    <p>DisplayQuestion: {state$.displayQuestion.get()}</p>
                 </>
             )}
         </>
@@ -67,3 +85,4 @@ function WaitingForNextQuestion() {
 }
 
 export default WaitingForNextQuestion;
+
