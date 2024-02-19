@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react";
 import { socket } from "../../socket";
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom";
 import { observable } from "@legendapp/state";
+import { useObserveEffect } from "@legendapp/state/react"
+import { enableReactTracking } from "@legendapp/state/config/enableReactTracking"
+
+import DisplayQuestion from "./DisplayQuestion";
 
 // global state
 const state$ = observable({
@@ -11,16 +14,17 @@ const state$ = observable({
   question: '',
   answers: [],
   timer: 30,
-
+  displayQuestion: false,
 });
 
 function WaitingForNextQuestion() {
 
-    const navigate = useNavigate();
     const { room_id: roomId } = useParams();
-    const [waitingForNextQuestion, setWaitingForNextQuestion] = useState<boolean>(true);
 
-    useEffect(() => {
+    // Enable React components to automatically track observables and rerender on change
+    enableReactTracking({ auto: true });
+
+    useObserveEffect(() => {
         // handle newQuestion event to send recvQuestion event to server
         const handleNewQuestion = (data: { question: string, answers: [] }) => {
 
@@ -35,49 +39,27 @@ function WaitingForNextQuestion() {
         socket.on("newQuestion", handleNewQuestion);
     });
 
-    useEffect(() => {
+    useObserveEffect(() => {
         // handle startTimer event to display question
         const handleStartTimer = () => {
             // update page
-            setWaitingForNextQuestion(false);
+            state$.displayQuestion.set(true);
         }
         
         // start timer
         socket.on("startTimer", handleStartTimer);
     })
 
-    useEffect(() => {
-        // handles quiz completed event to navigate to quiz completed page
-        const handleQuizCompleted = () => {
-            setWaitingForNextQuestion(false);
-            navigate(`/room/${roomId}/quiz-completed`);
-        }
-
-        // quiz is completed
-        socket.on("quizCompleted", handleQuizCompleted);
-
-        // stop listening for event when component is unmounted
-        return () => {
-            socket.off('quizCompleted');
-        }
-    }, [roomId]);
-
     return (
         <>
-            {waitingForNextQuestion ? ( // if still waiting 
+            {state$.displayQuestion.get() ? ( // if received question
+                <DisplayQuestion 
+                    question={state$.question.get()}
+                    answers={Array.from(state$.answers.entries())}
+                />
+            ) : ( // still waiting for next question
                 <>
                     <h1 className="text-3xl font-bold underline">Waiting for next question...</h1>
-                </>
-            ) : ( // if received nextQuestion event 
-                <>
-                    <p>question: {state$.question.get()}</p>
-                    <ul className="answers">
-                        {Array.from(state$.answers.entries()).map(([key, answer]) => (
-                            <li key={key}>
-                                {answer}
-                            </li>
-                        ))}
-                    </ul>
                 </>
             )}
         </>
