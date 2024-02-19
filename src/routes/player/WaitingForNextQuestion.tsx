@@ -2,7 +2,7 @@ import { socket } from "../../socket";
 import { useParams } from "react-router-dom";
 import { observable } from "@legendapp/state";
 import { useObserveEffect } from "@legendapp/state/react"
-import { persistObservable, configureObservablePersistence } from "@legendapp/state/persist"
+import { persistObservable } from "@legendapp/state/persist"
 import { enableReactTracking } from "@legendapp/state/config/enableReactTracking"
 import { ObservablePersistLocalStorage } from '@legendapp/state/persist-plugins/local-storage'
 
@@ -26,7 +26,7 @@ function WaitingForNextQuestion() {
 
     // enable React components to automatically track observables and rerender on change
     enableReactTracking({ auto: true });
-    // // automatically persist state$ (upon refresh, etc.)
+    // automatically persist state$ (upon refresh, etc.)
     persistObservable(state$, {
         pluginLocal: ObservablePersistLocalStorage,
         local: "state", 
