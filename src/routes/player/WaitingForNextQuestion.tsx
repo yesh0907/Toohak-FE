@@ -2,9 +2,9 @@ import { socket } from "../../socket";
 import { useParams } from "react-router-dom";
 import { observable } from "@legendapp/state";
 import { useObserveEffect } from "@legendapp/state/react"
-// import { persistObservable } from "@legendapp/state/persist"
+import { persistObservable } from "@legendapp/state/persist"
 import { enableReactTracking } from "@legendapp/state/config/enableReactTracking"
-// import { ObservablePersistLocalStorage } from '@legendapp/state/persist-plugins/local-storage'
+import { ObservablePersistLocalStorage } from '@legendapp/state/persist-plugins/local-storage'
 
 
 import DisplayQuestion from "./DisplayQuestion";
@@ -27,10 +27,10 @@ function WaitingForNextQuestion() {
     // enable React components to automatically track observables and rerender on change
     enableReactTracking({ auto: true });
     // automatically persist state$ (upon refresh, etc.)
-    // persistObservable(state$, {
-    //     pluginLocal: ObservablePersistLocalStorage,
-    //     local: "state", 
-    // })
+    persistObservable(state$, {
+        pluginLocal: ObservablePersistLocalStorage,
+        local: "state", 
+    })
 
     useObserveEffect(() => {
         // handle newQuestion event to send recvQuestion event to server
@@ -58,14 +58,6 @@ function WaitingForNextQuestion() {
         socket.on("startTimer", handleStartTimer);
     })
 
-    const handleClick = () => {
-        console.log("click");
-        console.log("displayQuestion: ", state$.displayQuestion.get());
-
-        socket.emit("joinRoom", roomId);
-        socket.emit("startQuiz", roomId);
-    }
-
     return (
         <>
             {state$.displayQuestion.get() ? ( // if received question
@@ -80,8 +72,7 @@ function WaitingForNextQuestion() {
                         className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-neutral-100 motion-reduce:animate-[spin_1.5s_linear_infinite]"
                         role="status">
                     </div>
- 
-                    {/* <button className="bg-black text-white" onClick={handleClick}>Click mE!</button> */}
+
                 </div>
             )}
         </>
