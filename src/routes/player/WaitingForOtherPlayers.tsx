@@ -1,20 +1,27 @@
-import { Link } from "react-router-dom";
-import { useEffect } from "react";
 import { socket } from "../../socket";
+import { Link } from "react-router-dom";
+import { observable } from "@legendapp/state";
 import { WS_EVENTS } from "../../socket/events";
+import { useObserveEffect } from "@legendapp/state/react"
+import { persistObservable } from "@legendapp/state/persist"
+import { enableReactTracking } from "@legendapp/state/config/enableReactTracking"
+import { ObservablePersistLocalStorage } from '@legendapp/state/persist-plugins/local-storage'
 
-function WaitingForOtherPlayers() {
-    useEffect(() => {
-      const showAnswer = () => {
-        // change state to show answer green/red
-      }
-      socket.on(WS_EVENTS.SHOW_ANSWER, showAnswer);
+// ShowAnswer not implemented yet (will accept bool representing correct/not)
+import ShowAnswer from "./ShowAnswer"
 
-      return () => {
-        socket.off(WS_EVENTS.SHOW_ANSWER);
-      }
-    });
-    
+const state$ = observable({
+  player: {
+    id: '',
+  },
+  isAnswerCorrect: false,
+  waitingForOthers: true, 
+  showAnswerPage: false, 
+  correctAnswer: '',
+  selectedAnswer: '',
+});
+
+function WaitingForOtherPlayersPage() {
   return (
     <>
       <div className="bg-gray-100 min-h-screen flex flex-col items-center gap-5">
@@ -30,7 +37,47 @@ function WaitingForOtherPlayers() {
         </div>
       </div>
     </>
-  );
+  )
+}
+
+function WaitingForOtherPlayers() {
+
+  enableReactTracking({ auto: true });
+  persistObservable(state$, {
+    pluginLocal: ObservablePersistLocalStorage,
+    local: "state", 
+  })
+
+  useObserveEffect(() => {
+    const handleShowAnswer = (data: { correctAnswer: string }) => {
+      const isCorrect = state$.selectedAnswer.get() === data.correctAnswer;
+      
+      state$.correctAnswer.set(data.correctAnswer);
+      state$.isAnswerCorrect.set(isCorrect);
+      state$.waitingForOthers.set(false);
+      state$.showAnswerPage.set(true);
+    };
+
+    socket.on(WS_EVENTS.SHOW_ANSWER, handleShowAnswer);
+
+    return () => {
+      socket.off(WS_EVENTS.SHOW_ANSWER, handleShowAnswer);
+    };
+  });
+
+  return (
+    <>
+        {state$.showAnswerPage.get() ? ( // check to change page to red/green
+            <ShowAnswer 
+                answerCorrect={state$.isAnswerCorrect.get()}
+            />
+        ) : ( 
+            <WaitingForOtherPlayersPage />
+        )}
+    </>
+);
+    
+  
 }
 
 export default WaitingForOtherPlayers;
