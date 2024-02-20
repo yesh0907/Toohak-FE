@@ -1,13 +1,10 @@
 import { Link } from "react-router-dom";
+import Header from "../components/Header";
 
 function LandingPage() {
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col items-center gap-5">
-      <div className="bg-purple-800 min-w-full p-5">
-        <Link to="/" className="text-6xl text-white font-bold">
-          !Toohak
-        </Link>
-      </div>
+    <div className="min-h-screen flex flex-col items-center gap-5">
+      <Header />
       <div>
         <p className="text-4xl">Kahoot! but better.</p>
       </div>
