@@ -7,7 +7,7 @@ import { persistObservable } from "@legendapp/state/persist"
 import { enableReactTracking } from "@legendapp/state/config/enableReactTracking"
 import { ObservablePersistLocalStorage } from '@legendapp/state/persist-plugins/local-storage'
 
-// ShowAnswer not implemented yet (will accept bool representing correct/not)
+// ShowAnswer not implemented yet (accepts bool representing correct/not)
 import ShowAnswer from "./ShowAnswer"
 
 const state$ = observable({
