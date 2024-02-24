@@ -3,9 +3,7 @@ import { Link } from "react-router-dom";
 import { observable } from "@legendapp/state";
 import { WS_EVENTS } from "../../socket/events";
 import { useObserveEffect } from "@legendapp/state/react"
-import { persistObservable } from "@legendapp/state/persist"
 import { enableReactTracking } from "@legendapp/state/config/enableReactTracking"
-import { ObservablePersistLocalStorage } from '@legendapp/state/persist-plugins/local-storage'
 
 // ShowAnswer not implemented yet (accepts bool representing correct/not)
 import ShowAnswer from "./ShowAnswer"
@@ -43,10 +41,6 @@ function WaitingForOtherPlayersPage() {
 function WaitingForOtherPlayers() {
 
   enableReactTracking({ auto: true });
-  persistObservable(state$, {
-    pluginLocal: ObservablePersistLocalStorage,
-    local: "state", 
-  })
 
   useObserveEffect(() => {
     const handleShowAnswer = (data: { correctAnswer: string }) => {
