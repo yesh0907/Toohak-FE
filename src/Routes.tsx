@@ -4,8 +4,9 @@ import CreateRoom from "./routes/host/CreateRoom";
 import JoinRoom from "./routes/player/JoinRoom";
 import WaitingForQuiz from "./routes/host/WaitingForQuiz";
 import QuizInProgress from "./routes/host/QuizInProgress";
-import WaitingForNextQuestion from "./routes/player/WaitingForNextQuestion";
+import WaitingForNextQuestion from "./components/player/WaitingForQuestion";
 import { enableReactTracking } from "@legendapp/state/config/enableReactTracking";
+import PlayQuiz from "./routes/player/PlayQuiz";
 
 // enable legend global state manager in all react components
 enableReactTracking({
@@ -22,6 +23,7 @@ const AppRoutes = () => {
         <Route path="/room/:room_id/waiting" element={<WaitingForQuiz />} />
         <Route path="/room/:room_id/in-progress" element={<QuizInProgress />} />
         <Route path="/room/:room_id/waiting-for-next-question" element={<WaitingForNextQuestion />} />
+        <Route path="/quiz/:room_id" element={<PlayQuiz />} />
       </Routes>
     </Router>
   );
