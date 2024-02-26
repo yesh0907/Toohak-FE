@@ -68,12 +68,12 @@ const PlayQuiz = observer(() => {
       state$.quiz.correctAnswer.set(data.correctAnswer);
 
       // emit waiting for quiz event after 5 seconds of showing answer
-      // const waitForQuizTimeout = setTimeout(() => {
-      //   console.log("waiting for quiz");
-      //   socket.emit(WS_EVENTS.WAIT_FOR_QUIZ, state$.roomId.get());
-      //   resetQuizState();
-      //   clearTimeout(waitForQuizTimeout);
-      // }, 5000);
+      const waitForQuizTimeout = setTimeout(() => {
+        console.log("waiting for quiz");
+        socket.emit(WS_EVENTS.WAIT_FOR_QUIZ, state$.roomId.get());
+        resetQuizState();
+        clearTimeout(waitForQuizTimeout);
+      }, 5000);
     };
 
     socket.on(WS_EVENTS.SHOW_ANSWER, handleShowAnswer);
