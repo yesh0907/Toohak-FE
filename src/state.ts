@@ -33,9 +33,9 @@ export const state$ = observable({
   player: {
     id: "",
   },
-  quiz: defaultQuizState,
+  quiz: {...defaultQuizState},
 } as IState);
 
 export const resetQuizState = () => {
-  state$.quiz.set(defaultQuizState);
+  state$.quiz.set({...defaultQuizState})
 };
