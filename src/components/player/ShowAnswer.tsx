@@ -10,8 +10,6 @@ function ShowAnswer() {
       ) : (
         <div className="w-auto h-auto flex flex-col justify-center items-center p-12 rounded-3xl bg-red-700">
           <div className="text-8xl font-thin text-gray-100">Incorrect.</div>
-        </div>
-      )}
     </>
   );
 }
