@@ -1,3 +1,5 @@
+import { socket } from "../../socket";
+import { WS_EVENTS } from "../../socket/events";
 import { state$ } from "../../state";
 
 function DisplayQuestion() {
@@ -10,7 +12,8 @@ function DisplayQuestion() {
         state$.quiz.answered.set(true);
         state$.quiz.waitingForOthers.set(true);
         state$.quiz.displayQuestion.set(false);
-        // make request to BE to submit answer
+        // send answer to BE
+        socket.emit(WS_EVENTS.ANSWER_QUESTION, state$.roomId.get(), state$.player.id.get(), answer);
     }
 
     return (
