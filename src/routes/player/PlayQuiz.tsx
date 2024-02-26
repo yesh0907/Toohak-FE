@@ -138,7 +138,7 @@ const PlayQuiz = observer(() => {
         {state$.quiz.displayQuestion.get() && <DisplayQuestion />}
         {state$.quiz.waitingForOthers.get() && <WaitingForOtherPlayers />}
         {state$.quiz.answered.get() && !state$.quiz.waitingForOthers.get() && (
-          <ShowAnswer correctAnswer={state$.quiz.correctAnswer.get()} />
+          <ShowAnswer />
         )}
         {!state$.quiz.displayQuestion.get() &&
           !state$.quiz.waitingForOthers.get() &&
