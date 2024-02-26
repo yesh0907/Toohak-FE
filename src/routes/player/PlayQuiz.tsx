@@ -117,11 +117,7 @@ const PlayQuiz = observer(() => {
 
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col items-center gap-5">
-      <div className="bg-purple-800 min-w-full p-5">
-        <Link to="/" className="text-6xl text-white font-bold">
-          !Toohak
-        </Link>
-      </div>
+      <Header />
       <div className="flex w-full p-2 justify-end">
         <p className="text-lg">ID: {state$.player.id.get()}</p>
       </div>
