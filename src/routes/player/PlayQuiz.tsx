@@ -58,7 +58,8 @@ const PlayQuiz = observer(() => {
       state$.quiz.displayQuestion.set(false);
       state$.quiz.waitingForOthers.set(false);
       state$.quiz.answered.set(true);
-      console.log("showing answer");
+      console.log("showing answer: " + data.correctAnswer);
+      state$.quiz.correctAnswer.set(data.correctAnswer);
     };
 
     socket.on(WS_EVENTS.SHOW_ANSWER, handleShowAnswer);
@@ -84,7 +85,7 @@ const PlayQuiz = observer(() => {
         {state$.quiz.displayQuestion.get() && <DisplayQuestion />}
         {state$.quiz.waitingForOthers.get() && <WaitingForOtherPlayers />}
         {state$.quiz.answered.get() && !state$.quiz.waitingForOthers.get() && (
-          <ShowAnswer />
+          <ShowAnswer correctAnswer={state$.quiz.correctAnswer.get()} />
         )}
         {!state$.quiz.displayQuestion.get() &&
           !state$.quiz.waitingForOthers.get() &&

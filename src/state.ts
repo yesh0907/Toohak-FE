@@ -6,6 +6,7 @@ interface IQuizState {
   answers: Array<string>;
   selectedAnswer: string;
   answered: boolean;
+  correctAnswer: string;
   isAnswerCorrect: boolean;
   waitingForOthers: boolean;
 }
@@ -24,6 +25,7 @@ const defaultQuizState: IQuizState = {
   answers: [],
   selectedAnswer: "",
   answered: false,
+  correctAnswer: "",
   isAnswerCorrect: false,
   waitingForOthers: false,
 };
