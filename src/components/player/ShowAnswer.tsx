@@ -1,5 +1,6 @@
+import { state$ } from "../../state";
 
-function ShowAnswer( { answerCorrect }: {answerCorrect: boolean} ) {
+function ShowAnswer() {    
     
     // wait 5 sec
     // emit WS(waitingforquiz)
@@ -7,7 +8,7 @@ function ShowAnswer( { answerCorrect }: {answerCorrect: boolean} ) {
 
     return (
         <div>
-            {answerCorrect}
+            {state$.quiz.isAnswerCorrect.get() ? 'yay you got it right' : 'boo wrong'}
         </div>
     );
 }
