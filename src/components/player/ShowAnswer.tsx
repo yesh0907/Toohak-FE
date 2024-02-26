@@ -5,7 +5,7 @@ type ShowAnswerProps = {
 };
 
 function ShowAnswer({ correctAnswer }: ShowAnswerProps) {
-  if (!state$.quiz.isAnswerCorrect.get()) {
+  if (state$.quiz.isAnswerCorrect.get()) {
     return (
       <>
         <div className="absolute top-0 left-0 w-screen h-screen flex flex-col justify-center items-center gap-10 bg-green-600">
