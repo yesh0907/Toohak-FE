@@ -58,7 +58,7 @@ export default function WaitingForQuiz() {
           </ul>
         </div>
         <button
-          className="bg-purple-700 hover:bg-purple-500 text-white hover:text-gray-50 p-2 rounded-lg mt-4"
+          className="bg-fuchsia-800 hover:bg-fuchsia-700 text-white hover:text-gray-50 p-2 rounded-lg mt-4"
           onClick={startQuiz}
         >
           Start Quiz!

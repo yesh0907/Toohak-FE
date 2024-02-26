@@ -1,9 +1,11 @@
-import DisplayQuestion from "../../components/player/DisplayQuestion";
 import { useEffect } from "react";
 import { socket } from "../../socket";
 import { WS_EVENTS } from "../../socket/events";
 import { useCountdown } from "usehooks-ts";
 import { resetQuizState, state$ } from "../../state";
+import DisplayQuestion from "../../components/player/DisplayQuestion";
+import Header from "../../components/Header";
+import QuizCompleted from "../../components/player/QuizCompleted";
 import ShowAnswer from "../../components/player/ShowAnswer";
 import WaitingForOtherPlayers from "../../components/player/WaitingForOtherPlayers";
 import WaitingForQuestion from "../../components/player/WaitingForQuestion";
@@ -12,7 +14,6 @@ import {
   useObservable,
   useObserveEffect,
 } from "@legendapp/state/react";
-import Header from "../../components/Header";
 
 // 30 seconds
 const TIMER_DURATION = 30;
@@ -112,6 +113,7 @@ const PlayQuiz = observer(() => {
   useObserveEffect(() => {
     // TODO
     const handleQuizCompleted = () => {
+      resetQuizState();
       console.log("yay we are done with the quiz!");
     };
 
