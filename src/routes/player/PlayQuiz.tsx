@@ -71,7 +71,11 @@ const PlayQuiz = observer(() => {
       // emit waiting for quiz event after 5 seconds of showing answer
       const waitForQuizTimeout = setTimeout(() => {
         console.log("waiting for quiz");
-        socket.emit(WS_EVENTS.WAIT_FOR_QUIZ, state$.roomId.get());
+        socket.emit(
+          WS_EVENTS.WAIT_FOR_QUIZ,
+          state$.roomId.get(),
+          state$.player.id.get()
+        );
         resetQuizState();
         clearTimeout(waitForQuizTimeout);
       }, 5000);
@@ -112,8 +116,17 @@ const PlayQuiz = observer(() => {
   // quiz is completed
   useObserveEffect(() => {
     // TODO
-    const handleQuizCompleted = () => {
-      resetQuizState();
+    interface QuizCompletedData {
+      leaderboard: Array<[string, number]>;
+      playerScore: number;
+    }
+
+    const handleQuizCompleted = (data: QuizCompletedData) => {
+      state$.quiz.leaderboard.set(data.leaderboard);
+      state$.quiz.playerFinalScore.set(data.playerScore);
+      state$.quiz.quizCompleted.set(true);
+      console.log(data);
+
       console.log("yay we are done with the quiz!");
     };
 
@@ -127,10 +140,11 @@ const PlayQuiz = observer(() => {
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col items-center gap-5">
       <Header />
-      <div className="flex w-full p-2 justify-end">
+      <div className="flex w-full p-4 justify-end">
         <p className="text-lg">ID: {state$.player.id.get()}</p>
       </div>
       <div className="flex flex-col gap-6">
+        {state$.quiz.quizCompleted.get() && <QuizCompleted />}
         {showTimer.get() && (
           <div className="text-2xl text-center">
             <span className="font-semibold">Time Left:</span>&nbsp;{count}{" "}

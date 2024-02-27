@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
+import QuizCompleted from "../components/player/QuizCompleted";
 
 function LandingPage() {
   return (
@@ -16,6 +17,7 @@ function LandingPage() {
           Get Started
         </Link>
       </div>
+      {/* <QuizCompleted /> */}
     </div>
   );
 }
