@@ -115,7 +115,6 @@ const PlayQuiz = observer(() => {
 
   // quiz is completed
   useObserveEffect(() => {
-    // TODO
     interface QuizCompletedData {
       leaderboard: Array<[string, number]>;
       playerScore: number;
