@@ -52,8 +52,8 @@ const PlayQuiz = observer(() => {
 
   // show answer
   useObserveEffect(() => {
-    const handleShowAnswer = (data: { correctAnswer: string }) => {
-      const isCorrect = state$.quiz.selectedAnswer.get() === data.correctAnswer;
+    const handleShowAnswer = (correctAnswer: string) => {
+      const isCorrect = state$.quiz.selectedAnswer.get() === correctAnswer;
 
       // stop, reset & hide timer
       stopCountdown();
@@ -65,8 +65,8 @@ const PlayQuiz = observer(() => {
       state$.quiz.displayQuestion.set(false);
       state$.quiz.waitingForOthers.set(false);
       state$.quiz.answered.set(true);
-      console.log("showing answer: " + data.correctAnswer);
-      state$.quiz.correctAnswer.set(data.correctAnswer);
+      console.log("showing answer:", correctAnswer);
+      state$.quiz.correctAnswer.set(correctAnswer);
 
       // emit waiting for quiz event after 5 seconds of showing answer
       const waitForQuizTimeout = setTimeout(() => {
@@ -140,7 +140,7 @@ const PlayQuiz = observer(() => {
         {state$.quiz.displayQuestion.get() && <DisplayQuestion />}
         {state$.quiz.waitingForOthers.get() && <WaitingForOtherPlayers />}
         {state$.quiz.answered.get() && !state$.quiz.waitingForOthers.get() && (
-          <ShowAnswer correctAnswer={state$.quiz.correctAnswer.get()} />
+          <ShowAnswer />
         )}
         {!state$.quiz.displayQuestion.get() &&
           !state$.quiz.waitingForOthers.get() &&
