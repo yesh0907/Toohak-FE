@@ -9,6 +9,9 @@ interface IQuizState {
   correctAnswer: string;
   isAnswerCorrect: boolean;
   waitingForOthers: boolean;
+  quizCompleted: boolean;
+  leaderboard: Array<[string, number]>;
+  playerFinalScore: number;
 }
 
 interface IState {
@@ -28,6 +31,9 @@ const defaultQuizState: IQuizState = {
   correctAnswer: "",
   isAnswerCorrect: false,
   waitingForOthers: false,
+  quizCompleted: false,
+  leaderboard: [],
+  playerFinalScore: 0,
 };
 
 export const state$ = observable({
@@ -35,9 +41,9 @@ export const state$ = observable({
   player: {
     id: "",
   },
-  quiz: {...defaultQuizState},
+  quiz: { ...defaultQuizState },
 } as IState);
 
 export const resetQuizState = () => {
-  state$.quiz.set({...defaultQuizState})
+  state$.quiz.set({ ...defaultQuizState });
 };

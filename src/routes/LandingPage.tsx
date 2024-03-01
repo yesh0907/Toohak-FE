@@ -9,10 +9,7 @@ function LandingPage() {
         <p className="text-4xl">Kahoot! but better.</p>
       </div>
       <div className="flex gap-3">
-        <Link
-          to="/create-room"
-          className="text-white text-xl rounded-2xl bg-fuchsia-800 p-2"
-        >
+        <Link to="/create-room" className="text-white text-xl rounded-lg bg-fuchsia-800 p-3">
           Get Started
         </Link>
       </div>

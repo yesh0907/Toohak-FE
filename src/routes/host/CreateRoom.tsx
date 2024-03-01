@@ -10,8 +10,8 @@ function CreateRoom() {
   const handleCreateRoomClick = async () => {
     try {
       const response = await fetch(`${apiEndpoint}/create-room`, {
-        method: 'POST',
-        body: JSON.stringify({ hostWsId: socket.id })
+        method: "POST",
+        body: JSON.stringify({ hostWsId: socket.id }),
       });
       const result = await response.json();
       // check if there was an error with request
@@ -42,7 +42,7 @@ function CreateRoom() {
         </div>
         <div className="flex gap-3">
           <button
-            className="text-white text-xl rounded-2xl bg-fuchsia-800 p-2"
+            className="text-white text-xl rounded-lg bg-fuchsia-800 p-3"
             onClick={handleCreateRoomClick}
           >
             Create Room
