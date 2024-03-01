@@ -1,5 +1,6 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { socket } from "../../socket";
+import Header from "../../components/Header";
 
 // get api endpoint from env
 const apiEndpoint = import.meta.env.VITE_BACKEND_URL;
@@ -32,11 +33,7 @@ function CreateRoom() {
   return (
     <>
       <div className="bg-gray-100 min-h-screen flex flex-col items-center gap-5">
-        <div className="bg-purple-800 min-w-full p-5">
-          <Link to="/" className="text-6xl text-white font-bold">
-            !Toohak
-          </Link>
-        </div>
+        <Header />
         <div>
           <p className="text-4xl">Host a room to start!</p>
         </div>

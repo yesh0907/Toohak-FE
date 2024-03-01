@@ -10,7 +10,10 @@ function LandingPage() {
       </div>
       <div className="flex gap-3">
         <Link to="/create-room" className="text-white text-xl rounded-lg bg-fuchsia-800 p-3">
-          Get Started
+          Play
+        </Link>
+        <Link to="/build-quiz" className="text-white text-xl rounded-lg bg-fuchsia-800 p-3">
+          Build Quiz
         </Link>
       </div>
     </div>
