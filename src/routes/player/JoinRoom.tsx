@@ -49,7 +49,7 @@ function JoinRoom() {
   }, [roomId, navigate]);
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col items-center gap-5">
+    <div className="bg-purple-100 min-h-screen flex flex-col items-center gap-5">
       <Header />
       <div className="flex flex-row-reverse w-full gap-3 p-2">
         <p className="text-lg">ID: {state$.player.id.get()}</p>

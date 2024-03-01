@@ -3,7 +3,7 @@ import Header from "../components/Header";
 
 function LandingPage() {
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col items-center gap-5">
+    <div className="bg-purple-100 min-h-screen flex flex-col items-center gap-5">
       <Header />
       <div>
         <p className="text-4xl">Kahoot! but better.</p>
