@@ -1,21 +1,21 @@
 function ScoreEntry({
-  player,
-  currentPlayer,
+  isCurrPlayer,
+  playerName,
   playerScore,
 }: {
-  player: [string, number];
-  currentPlayer: string;
+  isCurrPlayer: boolean;
+  playerName: string;
   playerScore: number;
 }) {
   return (
     <div
       className={`w-full flex justify-between text-2xl p-4 rounded-xl ${
-        player[0] === currentPlayer
+        isCurrPlayer
           ? "bg-yellow-600" // Gold background for the current player
           : "bg-purple-600" // Purple background for others
       }`}
     >
-      <span className="text-white">{player[0] === currentPlayer ? "You" : player[0]}</span>
+      <span className="text-white">{isCurrPlayer ? "You" : playerName}</span>
       <span className="text-white">{playerScore}</span>
     </div>
   );
