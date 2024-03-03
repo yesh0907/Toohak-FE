@@ -28,7 +28,7 @@ function QuizQuestion({ index, question, onUpdate, onDelete }: QuizQuestionProps
       ...question,
       type,
       answers: type === "TF" ? ["True", "False"] : ["", "", "", ""],
-      correctAnswer: undefined, // Reset correctAnswer when changing question type
+      correctAnswer: undefined,
     });
     setCorrectAnswer(undefined);
   };
@@ -39,10 +39,17 @@ function QuizQuestion({ index, question, onUpdate, onDelete }: QuizQuestionProps
     onUpdate(index, { ...question, answers });
   };
 
-  const handleSetCorrectAnswer = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSetCorrectAnswer = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const text = e.target.value;
+    console.log("Selected answer: " + text);
+
+    // Check if the selected answer is different from the current correct answer
+    if (text !== correctAnswer) {
+      onUpdate(index, { ...question, correctAnswer: text });
+    }
+
+    // Update the local state for correctAnswer
     setCorrectAnswer(text);
-    onUpdate(index, { ...question, correctAnswer: text });
   };
 
   const handleDelete = () => {
@@ -77,7 +84,7 @@ function QuizQuestion({ index, question, onUpdate, onDelete }: QuizQuestionProps
             </select>
           </label>
         </div>
-        <button className="bg-red-700 text-white p-2 rounded-lg" onClick={handleDelete}>
+        <button className="bg-red-700 hover:bg-red-600 p-2 rounded-lg" onClick={handleDelete}>
           <img src={deleteButton} alt="" />
         </button>
       </div>
@@ -86,46 +93,44 @@ function QuizQuestion({ index, question, onUpdate, onDelete }: QuizQuestionProps
         <div className="flex flex-col gap-3 w-full">
           {question.answers.map((answer, answerIndex) => (
             <label className="flex gap-1 items-center w-full font-medium" key={answerIndex}>
-              {answerLabels[answerIndex]}:
+              <span className="w-4">{answerLabels[answerIndex]}:</span>
               <input
                 className="rounded-lg w-8/12 p-1 bg-gray-100 font-normal"
                 type="text"
                 value={answer}
                 onChange={(e) => handleAnswerChange(answerIndex, e)}
               />
-              <input
-                type="radio"
-                name={`correctAnswer-${index}`}
-                value={answer}
-                checked={correctAnswer === answer}
-                onChange={handleSetCorrectAnswer}
-              />
             </label>
           ))}
+          <label className="flex gap-1 items-center w-full font-medium">
+            Correct Answer:
+            <select
+              className="rounded-lg p-1 bg-gray-100 font-normal"
+              value={correctAnswer}
+              onChange={handleSetCorrectAnswer}
+            >
+              {question.answers.map((answer, index) => (
+                <option key={index} value={answer}>
+                  {answerLabels[index]}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
       )}
 
       {question.type === "TF" && (
         <div className="flex flex-col gap-3 w-full">
           <label className="flex gap-1 items-center w-full font-medium">
-            True
-            <input
-              type="radio"
-              name={`correctAnswer-${index}`}
-              value="True"
-              checked={correctAnswer === "True"}
+            Correct Answer:
+            <select
+              className="rounded-lg p-1 bg-gray-100 font-normal"
+              value={correctAnswer}
               onChange={handleSetCorrectAnswer}
-            />
-          </label>
-          <label className="flex gap-1 items-center w-full font-medium">
-            False
-            <input
-              type="radio"
-              name={`correctAnswer-${index}`}
-              value="False"
-              checked={correctAnswer === "False"}
-              onChange={handleSetCorrectAnswer}
-            />
+            >
+              <option value="True">True</option>
+              <option value="False">False</option>
+            </select>
           </label>
         </div>
       )}

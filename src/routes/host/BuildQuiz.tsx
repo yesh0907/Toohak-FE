@@ -1,10 +1,14 @@
 import { useState } from "react";
 import Header from "../../components/Header";
 import QuizQuestion, { Question } from "../../components/host/QuizQuestion";
+import addButton from "../../assets/icons/add-square-svgrepo-com.svg";
 
 function BuildQuiz() {
   const [quizName, setQuizName] = useState("Untitled Quiz");
-  const [questions, setQuestions] = useState<Question[]>([]);
+  // Initialize questions state with one default question
+  const [questions, setQuestions] = useState<Question[]>([
+    { question: "", type: "MCQ", answers: ["", "", "", ""] },
+  ]);
 
   const handleQuizNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuizName(e.target.value);
@@ -24,6 +28,11 @@ function BuildQuiz() {
     const updatedQuestions = [...questions];
     updatedQuestions.splice(index, 1);
     setQuestions(updatedQuestions);
+  };
+
+  const publishQuiz = () => {
+    // TODO: send quiz info to backend
+    console.log("publish quiz");
   };
 
   return (
@@ -50,8 +59,17 @@ function BuildQuiz() {
             />
           ))}
         </div>
-        <button className="text-white text-xl rounded-lg bg-fuchsia-800 p-3" onClick={addQuestion}>
-          Add Question
+        <button
+          className="text-white rounded-lg bg-fuchsia-800 hover:bg-fuchsia-700 hover:text-gray-50 p-2"
+          onClick={addQuestion}
+        >
+          <img src={addButton} alt="" />
+        </button>
+        <button
+          className="text-white text-xl rounded-lg bg-fuchsia-800 hover:bg-fuchsia-700 hover:text-gray-50 p-3"
+          onClick={publishQuiz}
+        >
+          Publish Quiz
         </button>
       </div>
     </div>

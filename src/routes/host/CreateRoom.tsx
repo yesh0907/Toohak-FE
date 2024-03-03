@@ -39,7 +39,7 @@ function CreateRoom() {
         </div>
         <div className="flex gap-3">
           <button
-            className="text-white text-xl rounded-lg bg-fuchsia-800 p-3"
+            className="text-white text-xl rounded-lg bg-fuchsia-800 hover:bg-fuchsia-700 hover:text-gray-50 p-3"
             onClick={handleCreateRoomClick}
           >
             Create Room
