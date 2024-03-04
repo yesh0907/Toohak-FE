@@ -66,7 +66,7 @@ function QuizQuestion({ index, question, onUpdate, onDelete }: QuizQuestionProps
           <label className="flex gap-1 items-center w-full font-medium">
             Question:
             <input
-              className="rounded-lg w-full p-1 bg-gray-100"
+              className="rounded-lg w-full p-1 bg-gray-100 font-normal"
               type="text"
               value={question.question}
               onChange={handleQuestionChange}
