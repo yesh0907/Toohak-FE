@@ -24,19 +24,37 @@ function QuizQuestion({ index, question, onUpdate, onDelete }: QuizQuestionProps
 
   const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const type = e.target.value as Question["type"];
+    const newCorrectAnswer = type === "TF" ? "True" : undefined;
     onUpdate(index, {
       ...question,
       type,
       answers: type === "TF" ? ["True", "False"] : ["", "", "", ""],
-      correctAnswer: undefined,
+      correctAnswer: newCorrectAnswer,
     });
-    setCorrectAnswer(undefined);
+    setCorrectAnswer(newCorrectAnswer);
   };
 
   const handleAnswerChange = (answerIndex: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const newAnswer = e.target.value;
     const answers = [...question.answers];
-    answers[answerIndex] = e.target.value;
-    onUpdate(index, { ...question, answers });
+    // check if we need to update correctAnswer state too
+    // Note: when correctAnswer is undefined, the default correct answer value is at index 0
+    const correctAnswerIndex = correctAnswer ? answers.findIndex((ans) => ans === correctAnswer) : 0;
+    const updateCorrectAnswer = correctAnswerIndex === answerIndex;
+    // update state
+    answers[answerIndex] = newAnswer;
+    let newState = {
+      ...question,
+      answers
+    };
+    if (updateCorrectAnswer) {
+      setCorrectAnswer(newAnswer);
+      newState = {
+        ...newState,
+        correctAnswer: newAnswer,
+      }
+    }
+    onUpdate(index, newState);
   };
 
   const handleSetCorrectAnswer = (e: React.ChangeEvent<HTMLSelectElement>) => {
