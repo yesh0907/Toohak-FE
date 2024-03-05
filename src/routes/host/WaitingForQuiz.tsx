@@ -41,7 +41,7 @@ export default function WaitingForQuiz() {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col items-center gap-5">
+    <div className="bg-purple-100 min-h-screen flex flex-col items-center gap-5">
       <Header />
       <div className="p-2">
         <p className="text-3xl font-bold pb-4">Waiting for Quiz to start...</p>
