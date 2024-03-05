@@ -55,7 +55,6 @@ export default function WaitingForQuiz() {
 
 
   const startQuiz = () => {
-    console.log(selectedQuiz);
     if (!selectedQuiz) {
       setError(true);
       return;
@@ -103,11 +102,12 @@ export default function WaitingForQuiz() {
           {error && <p className="font-semibold text-lg text-red-500">Please select a quiz</p> }
           <div className="flex gap-3">
             <label htmlFor="select-quiz" className="font-bold text-xl">Selected Quiz:</label>
-            <select name="quiz" id="select-quiz" onChange={(e) => {
-              const id = e.target.value;
-              setSelectedQuiz(id);
-            }}>
-              <option value="">--Please choose an option--</option>
+            <select
+              name="quiz"
+              id="select-quiz"
+              className="rounded-lg p-1 font-normal"
+              onChange={(e) => setSelectedQuiz(e.target.value)}>
+              <option value="">Please choose a quiz</option>
               {quizzes?.map(({id, name}) => (
                   <option key={id} value={id}>{name}</option>
                 ))}
