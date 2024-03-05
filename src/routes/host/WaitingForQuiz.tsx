@@ -4,12 +4,32 @@ import { socket } from "../../socket";
 import { WS_EVENTS } from "../../socket/events";
 import Header from "../../components/Header";
 
+// get api endpoint from env
+const apiEndpoint = import.meta.env.VITE_BACKEND_URL;
+
+// api response type
+interface IGetAllQuizzesRes {
+  quizzes: Array<{
+    "_id": string,
+    QuizName: string,
+  }>;
+}
+
+// state data object type
+interface IQuiz {
+  id: string;
+  name: string;
+}
+
 export default function WaitingForQuiz() {
   const navigate = useNavigate();
   const { room_id: roomId } = useParams();
   const origin = window.location.origin;
 
   const [players, setPlayers] = useState<string[]>([]);
+  const [quizzes, setQuizzes] = useState<Array<IQuiz>>();
+  const [selectedQuiz, setSelectedQuiz] = useState("");
+  const [error, setError] = useState(false);
 
   // Host joins the websocket room for the quiz
   useEffect(() => {
@@ -33,12 +53,42 @@ export default function WaitingForQuiz() {
     };
   }, []);
 
+
   const startQuiz = () => {
+    console.log(selectedQuiz);
+    if (!selectedQuiz) {
+      setError(true);
+      return;
+    }
     // emit start quiz event
-    socket.emit(WS_EVENTS.START_QUIZ, roomId);
+    socket.emit(WS_EVENTS.START_QUIZ, roomId, selectedQuiz);
     // transition to next page
     navigate(`/room/${roomId}/in-progress`);
   };
+
+  useEffect(() => {
+    const fetchQuizzes = async () => {
+      try {
+        const res = await fetch(`${apiEndpoint}/get-all-quizzes`);
+        if (!res.ok) {
+          throw new Error('request failed');
+        }
+        const json: IGetAllQuizzesRes = await res.json();
+        const {quizzes} = json;
+        const processedQuizzes = new Array<IQuiz>();
+        for (const quiz of quizzes) {
+          if (quiz.QuizName) {
+            processedQuizzes.push({ id: quiz._id, name: quiz.QuizName });
+          }
+        }
+        setQuizzes(processedQuizzes);
+      } catch (e) {
+        console.error(`fetchQuizzes: ${e}`);
+      }
+    }
+    
+    fetchQuizzes();
+  }, []);
 
   return (
     <div className="bg-purple-100 min-h-screen flex flex-col items-center gap-5">
@@ -49,6 +99,21 @@ export default function WaitingForQuiz() {
           Go to the following link to join the quiz:&nbsp;
           <span className="font-bold">{`${origin}/join/${roomId}`}</span>
         </p>
+        <div className="mt-4">
+          {error && <p className="font-semibold text-lg text-red-500">Please select a quiz</p> }
+          <div className="flex gap-3">
+            <label htmlFor="select-quiz" className="font-bold text-xl">Selected Quiz:</label>
+            <select name="quiz" id="select-quiz" onChange={(e) => {
+              const id = e.target.value;
+              setSelectedQuiz(id);
+            }}>
+              <option value="">--Please choose an option--</option>
+              {quizzes?.map(({id, name}) => (
+                  <option key={id} value={id}>{name}</option>
+                ))}
+            </select> 
+          </div>
+        </div>
         <div className="mt-4">
           <p className="font-bold text-xl">Current Players:</p>
           <ul className="list-disc pl-10">
