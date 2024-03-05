@@ -2,8 +2,58 @@ import { useState } from "react";
 import Header from "../../components/Header";
 import QuizQuestion, { Question } from "../../components/host/QuizQuestion";
 import addButton from "../../assets/icons/add-square-svgrepo-com.svg";
+import { useNavigate } from "react-router-dom";
+
+// get api endpoint from env
+const apiEndpoint = import.meta.env.VITE_BACKEND_URL;
+
+// question keys
+const keys = { MCQ: ["A", "B", "C", "D"], TF: ["True", "False"] };
+
+const createQuestion = async (question: Question) => {
+  const { type } = question;
+  // transfroms answers from ["answer1", "answer2", ...] to {"A": "answer1", "B": "answer2"} for API to insert into DB
+  const possibleAnswers = Object.fromEntries(
+    question.answers.map((answer, idx) => ([keys[type][idx], answer]))
+  );
+  try {
+    const res = await fetch(`${apiEndpoint}/create-question`, {
+      method: "POST",
+      body: JSON.stringify({
+        question: question.question,
+        possibleAnswers,
+        correctAnswer: question.correctAnswer,
+        questionType: type,
+      }),
+    });
+    if (!res.ok) {
+      throw new Error("request failed");
+    }
+    const json: { id: string } = await res.json();
+    return json.id;
+  } catch (e) {
+    console.error('createQuestion:', e);
+  }
+}
+
+const createQuiz = async (quizName: string, quizQuestions: Array<string>) => {
+  try {
+    const res = await fetch(`${apiEndpoint}/create-quiz`, {
+      method: "POST",
+      body: JSON.stringify({ quizName, quizQuestions }),
+    });
+    if (!res.ok) {
+      throw new Error("request failed");
+    }
+    const json: { quizId: string } = await res.json();
+    return json.quizId;
+  } catch (e) {
+    console.error('createQuestion:', e);
+  }
+}
 
 function BuildQuiz() {
+  const navigate = useNavigate();
   const [quizName, setQuizName] = useState("Untitled Quiz");
   // Initialize questions state with one default question
   const [questions, setQuestions] = useState<Question[]>([
@@ -30,9 +80,16 @@ function BuildQuiz() {
     setQuestions(updatedQuestions);
   };
 
-  const publishQuiz = () => {
-    // TODO: send quiz info to backend
-    console.log("publish quiz");
+  const publishQuiz = async () => {
+    const questionIds = await Promise.all(questions.map(async (question) => await createQuestion(question)));
+    const filteredQuestionIds: Array<string> = questionIds.filter(id => id) as Array<string>;
+    const quizId = await createQuiz(quizName, filteredQuestionIds);
+    if (quizId) {
+      // go to home page on success
+      navigate('/');
+    } else {
+      console.error('Failed to create quiz');
+    }
   };
 
   return (
