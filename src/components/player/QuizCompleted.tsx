@@ -1,6 +1,6 @@
 import { state$ } from "../../state";
 import ScoreEntry from "./ScoreEntry";
-import BackToHome from "../BackToHome";
+import BackToHome from "../shared/BackToHome";
 
 function QuizCompleted() {
   const leaderboard = state$.quiz.leaderboard.get(); // leaderboard of top 3 scores

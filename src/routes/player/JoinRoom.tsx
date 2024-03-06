@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { socket } from "../../socket";
 import { WS_EVENTS } from "../../socket/events";
 import { state$ } from "../../state";
-import Header from "../../components/Header";
+import Header from "../../components/shared/Header";
 
 // generate a random number from 1-1000 and append to string 'player'
 const generatePlayerId = () => `player${Math.floor(Math.random() * 1000) + 1}`;

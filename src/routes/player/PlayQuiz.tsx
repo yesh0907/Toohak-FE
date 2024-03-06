@@ -4,7 +4,7 @@ import { WS_EVENTS } from "../../socket/events";
 import { useCountdown } from "usehooks-ts";
 import { resetQuizState, state$ } from "../../state";
 import DisplayQuestion from "../../components/player/DisplayQuestion";
-import Header from "../../components/Header";
+import Header from "../../components/shared/Header";
 import QuizCompleted from "../../components/player/QuizCompleted";
 import ShowAnswer from "../../components/player/ShowAnswer";
 import WaitingForOtherPlayers from "../../components/player/WaitingForOtherPlayers";
