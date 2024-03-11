@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Header from "../../components/Header";
+import Header from "../../components/shared/Header";
 import QuizQuestion, { Question } from "../../components/host/QuizQuestion";
 import addButton from "../../assets/icons/add-square-svgrepo-com.svg";
 import { useNavigate } from "react-router-dom";

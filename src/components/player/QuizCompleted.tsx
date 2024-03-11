@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
 import { state$ } from "../../state";
 import ScoreEntry from "./ScoreEntry";
+import BackToHome from "../shared/BackToHome";
 
 function QuizCompleted() {
   const leaderboard = state$.quiz.leaderboard.get(); // leaderboard of top 3 scores
@@ -28,9 +28,7 @@ function QuizCompleted() {
           />
         )}
       </div>
-      <Link to="/" className="bg-purple-800 p-5 rounded-3xl text-2xl text-white">
-        Back to Home
-      </Link>
+      <BackToHome />
     </div>
   );
 }
