@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { socket } from "../../socket";
 import { WS_EVENTS } from "../../socket/events";
-import Header from "../../components/Header";
+import Header from "../../components/shared/Header";
 
 // get api endpoint from env
 const apiEndpoint = import.meta.env.VITE_BACKEND_URL;
