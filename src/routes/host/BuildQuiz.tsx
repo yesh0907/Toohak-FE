@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 // get api endpoint from env
 const apiEndpoint = import.meta.env.VITE_BACKEND_URL;
 
-// question keys
+// used as keys for answer choices
 const keys = { MCQ: ["A", "B", "C", "D"], TF: ["True", "False"] };
 
 const createQuestion = async (question: Question) => {
@@ -64,6 +64,7 @@ function BuildQuiz() {
     setQuizName(e.target.value);
   };
 
+  // add a new empty question
   const addQuestion = () => {
     setQuestions([...questions, { question: "", type: "MCQ", answers: ["", "", "", ""] }]);
   };
@@ -81,9 +82,11 @@ function BuildQuiz() {
   };
 
   const publishQuiz = async () => {
+    // call create question endpoint for all questions in quiz and store their id
     const questionIds = await Promise.all(
       questions.map(async (question) => await createQuestion(question))
     );
+    // filter out any ids that are null/undefined/empty
     const filteredQuestionIds: Array<string> = questionIds.filter((id) => id) as Array<string>;
     const quizId = await createQuiz(quizName, filteredQuestionIds);
     if (quizId) {

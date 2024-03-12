@@ -41,8 +41,6 @@ export default function WaitingForQuiz() {
 
     // handle new player event
     const handleNewPlayer = ({ playerId }: { playerId: string }) => {
-      // set state this way to avoid calling this effect again
-      // see https://socket.io/how-to/use-with-react#remarks-about-the-useeffect-hook
       setPlayers((prevPlayers) => [...prevPlayers, playerId]);
     };
 

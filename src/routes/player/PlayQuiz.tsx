@@ -14,6 +14,7 @@ import { observer, useObservable, useObserveEffect } from "@legendapp/state/reac
 // 30 seconds
 const TIMER_DURATION = 30;
 
+// use observer function from legend state manager for fast state tracking
 const PlayQuiz = observer(() => {
   // nice hook to simplify the timer logic, default interval: 1000 ms (1 second)
   const [count, { startCountdown, stopCountdown, resetCountdown }] = useCountdown({
@@ -33,7 +34,6 @@ const PlayQuiz = observer(() => {
       if (!state$.quiz.displayQuestion.get()) {
         showTimer.set(true);
         state$.quiz.displayQuestion.set(true);
-        console.log("starting timer now!");
         startCountdown();
       }
     };
@@ -60,12 +60,10 @@ const PlayQuiz = observer(() => {
       state$.quiz.displayQuestion.set(false);
       state$.quiz.waitingForOthers.set(false);
       state$.quiz.answered.set(true);
-      console.log("showing answer:", correctAnswer);
       state$.quiz.correctAnswer.set(correctAnswer);
 
       // emit waiting for quiz event after 5 seconds of showing answer
       const waitForQuizTimeout = setTimeout(() => {
-        console.log("waiting for quiz");
         socket.emit(WS_EVENTS.WAIT_FOR_QUIZ, state$.roomId.get(), state$.player.id.get());
         resetQuizState();
         clearTimeout(waitForQuizTimeout);
@@ -113,10 +111,10 @@ const PlayQuiz = observer(() => {
       leaderboard: Array<[string, number]>;
       playerScore: number;
     }) => {
+      // update state
       state$.quiz.leaderboard.set(leaderboard);
       state$.quiz.playerFinalScore.set(playerScore);
       state$.quiz.quizCompleted.set(true);
-      console.log("yay we are done with the quiz!");
     };
 
     socket.on(WS_EVENTS.QUIZ_COMPLETED, handleQuizCompleted);
@@ -138,6 +136,7 @@ const PlayQuiz = observer(() => {
             <span className="font-semibold">Time Left:</span>&nbsp;{count} seconds
           </div>
         )}
+        {/* determine which component to show based on the quiz's state */}
         {state$.quiz.displayQuestion.get() && <DisplayQuestion />}
         {state$.quiz.waitingForOthers.get() && <WaitingForOtherPlayers />}
         {state$.quiz.answered.get() && !state$.quiz.waitingForOthers.get() && <ShowAnswer />}
