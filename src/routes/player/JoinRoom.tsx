@@ -14,6 +14,11 @@ function JoinRoom() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // remove any previous event listeners
+    socket.removeAllListeners();
+  }, []);
+
+  useEffect(() => {
     // Check if roomId is available before emitting the message
     if (roomId) {
       state$.roomId.set(roomId);

@@ -36,6 +36,9 @@ export default function WaitingForQuiz() {
   }, [roomId]);
 
   useEffect(() => {
+    // remove any previous socket event listeners
+    socket.removeAllListeners();
+
     // handle new player event
     const handleNewPlayer = ({ playerId }: { playerId: string }) => {
       // set state this way to avoid calling this effect again
