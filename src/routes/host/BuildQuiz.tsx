@@ -12,9 +12,9 @@ const keys = { MCQ: ["A", "B", "C", "D"], TF: ["True", "False"] };
 
 const createQuestion = async (question: Question) => {
   const { type } = question;
-  // transfroms answers from ["answer1", "answer2", ...] to {"A": "answer1", "B": "answer2"} for API to insert into DB
+  // transforms answers from ["answer1", "answer2", ...] to {"A": "answer1", "B": "answer2"} for API to insert into DB
   const possibleAnswers = Object.fromEntries(
-    question.answers.map((answer, idx) => ([keys[type][idx], answer]))
+    question.answers.map((answer, idx) => [keys[type][idx], answer])
   );
   try {
     const res = await fetch(`${apiEndpoint}/create-question`, {
@@ -32,9 +32,9 @@ const createQuestion = async (question: Question) => {
     const json: { id: string } = await res.json();
     return json.id;
   } catch (e) {
-    console.error('createQuestion:', e);
+    console.error("createQuestion:", e);
   }
-}
+};
 
 const createQuiz = async (quizName: string, quizQuestions: Array<string>) => {
   try {
@@ -48,9 +48,9 @@ const createQuiz = async (quizName: string, quizQuestions: Array<string>) => {
     const json: { quizId: string } = await res.json();
     return json.quizId;
   } catch (e) {
-    console.error('createQuestion:', e);
+    console.error("createQuestion:", e);
   }
-}
+};
 
 function BuildQuiz() {
   const navigate = useNavigate();
@@ -81,14 +81,16 @@ function BuildQuiz() {
   };
 
   const publishQuiz = async () => {
-    const questionIds = await Promise.all(questions.map(async (question) => await createQuestion(question)));
-    const filteredQuestionIds: Array<string> = questionIds.filter(id => id) as Array<string>;
+    const questionIds = await Promise.all(
+      questions.map(async (question) => await createQuestion(question))
+    );
+    const filteredQuestionIds: Array<string> = questionIds.filter((id) => id) as Array<string>;
     const quizId = await createQuiz(quizName, filteredQuestionIds);
     if (quizId) {
       // go to home page on success
-      navigate('/');
+      navigate("/");
     } else {
-      console.error('Failed to create quiz');
+      console.error("Failed to create quiz");
     }
   };
 

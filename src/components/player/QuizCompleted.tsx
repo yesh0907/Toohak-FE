@@ -5,7 +5,7 @@ import ScoreEntry from "./ScoreEntry";
 function QuizCompleted() {
   const leaderboard = state$.quiz.leaderboard.get(); // leaderboard of top 3 scores
   const currentPlayerScore = state$.quiz.playerFinalScore.get(); // current player's score
-  const currentPlayer = state$.player.id.get();
+  const currentPlayer = state$.player.id.get(); // current player ID
   const playerPlaced = leaderboard.some((player) => player[0] === currentPlayer); // did player place in top 3?
   return (
     <div className="w-full h-full flex flex-col justify-between items-center gap-10">

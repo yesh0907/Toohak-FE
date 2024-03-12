@@ -10,8 +10,8 @@ const apiEndpoint = import.meta.env.VITE_BACKEND_URL;
 // api response type
 interface IGetAllQuizzesRes {
   quizzes: Array<{
-    "_id": string,
-    QuizName: string,
+    _id: string;
+    QuizName: string;
   }>;
 }
 
@@ -25,7 +25,6 @@ export default function WaitingForQuiz() {
   const navigate = useNavigate();
   const { room_id: roomId } = useParams();
   const origin = window.location.origin;
-
   const [players, setPlayers] = useState<string[]>([]);
   const [quizzes, setQuizzes] = useState<Array<IQuiz>>();
   const [selectedQuiz, setSelectedQuiz] = useState("");
@@ -53,7 +52,6 @@ export default function WaitingForQuiz() {
     };
   }, []);
 
-
   const startQuiz = () => {
     if (!selectedQuiz) {
       setError(true);
@@ -70,10 +68,10 @@ export default function WaitingForQuiz() {
       try {
         const res = await fetch(`${apiEndpoint}/get-all-quizzes`);
         if (!res.ok) {
-          throw new Error('request failed');
+          throw new Error("request failed");
         }
         const json: IGetAllQuizzesRes = await res.json();
-        const {quizzes} = json;
+        const { quizzes } = json;
         const processedQuizzes = new Array<IQuiz>();
         for (const quiz of quizzes) {
           if (quiz.QuizName) {
@@ -84,8 +82,8 @@ export default function WaitingForQuiz() {
       } catch (e) {
         console.error(`fetchQuizzes: ${e}`);
       }
-    }
-    
+    };
+
     fetchQuizzes();
   }, []);
 
@@ -99,19 +97,24 @@ export default function WaitingForQuiz() {
           <span className="font-bold">{`${origin}/join/${roomId}`}</span>
         </p>
         <div className="mt-4">
-          {error && <p className="font-semibold text-lg text-red-500">Please select a quiz</p> }
+          {error && <p className="font-semibold text-lg text-red-500">Please select a quiz</p>}
           <div className="flex gap-3">
-            <label htmlFor="select-quiz" className="font-bold text-xl">Selected Quiz:</label>
+            <label htmlFor="select-quiz" className="font-bold text-xl">
+              Selected Quiz:
+            </label>
             <select
               name="quiz"
               id="select-quiz"
               className="rounded-lg p-1 font-normal"
-              onChange={(e) => setSelectedQuiz(e.target.value)}>
+              onChange={(e) => setSelectedQuiz(e.target.value)}
+            >
               <option value="">Please choose a quiz</option>
-              {quizzes?.map(({id, name}) => (
-                  <option key={id} value={id}>{name}</option>
-                ))}
-            </select> 
+              {quizzes?.map(({ id, name }) => (
+                <option key={id} value={id}>
+                  {name}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
         <div className="mt-4">

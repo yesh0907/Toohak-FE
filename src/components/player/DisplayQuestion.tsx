@@ -3,6 +3,7 @@ import { WS_EVENTS } from "../../socket/events";
 import { state$ } from "../../state";
 
 function DisplayQuestion() {
+  // Get question and answers from quiz state
   const question = state$.quiz.question.get();
   const answers = state$.quiz.answers.get();
 
@@ -13,12 +14,7 @@ function DisplayQuestion() {
     state$.quiz.waitingForOthers.set(true);
     state$.quiz.displayQuestion.set(false);
     // send answer to BE
-    socket.emit(
-      WS_EVENTS.ANSWER_QUESTION,
-      state$.roomId.get(),
-      state$.player.id.get(),
-      answer
-    );
+    socket.emit(WS_EVENTS.ANSWER_QUESTION, state$.roomId.get(), state$.player.id.get(), answer);
   };
 
   return (
